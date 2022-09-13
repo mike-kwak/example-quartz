@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  mariadb:
+    image: mariadb:10.9
+    environment:
+      LANG: C.UTF-8
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: counter
+      MYSQL_USER: counteruser
+      MYSQL_PASSWORD: secret
+    command:
+      - --ssl=0
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      #- ./local-dev/.volumes/db:/var/lib/mysql
+      - ./local-dev/config/db/:/docker-entrypoint-initdb.d/
+    ports:
+      - "3306:3306"
+
+  traefik:
+    image: traefik:2.8
+    volumes:
+      - ./local-dev/config/traefik/:/etc/traefik
+    ports:
+      - "3080:80" # counter app access port
+      - "8888:8080" # traefik dashboard access port
+
+  app-1:
+    image: example-counter-app
+    restart: on-failure
+    depends_on:
+      - mariadb
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    command:
+      - "-Dspring.profiles.active=cluster"
+      - "-jar"
+      - "/opt/server/example-quartz-0.0.1-SNAPSHOT.jar"
+    ports:
+      - "8181:8080"
+
+  app-2:
+    image: example-counter-app
+    restart: on-failure
+    depends_on:
+      - mariadb
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command:
+      - "-Dspring.profiles.active=cluster"
+      - "-jar"
+      - "/opt/server/example-quartz-0.0.1-SNAPSHOT.jar"
+    ports:
+      - "8182:8080"

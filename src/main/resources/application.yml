@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    default: inmemory
+    group:
+      inmemory: common,inmemory
+      local: common,database,local
+      cluster: common,database,docker-cluster
+

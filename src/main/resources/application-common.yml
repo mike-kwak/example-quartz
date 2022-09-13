@@ -1,0 +1,13 @@
+spring:
+  sql:
+    init:
+      mode: never
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+    include-stacktrace: never
+    include-binding-errors: never
+    include-exception: false
+    include-message: never

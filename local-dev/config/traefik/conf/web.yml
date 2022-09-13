@@ -1,0 +1,14 @@
+http:
+  routers:
+    counter-router:
+      entryPoints:
+        - web
+      service: counter-app-svc
+      rule: PathPrefix(`/counter`)
+
+  services:
+    counter-app-svc:
+      loadBalancer:
+        servers:
+          - url: "http://app-1:8080/"
+          - url: "http://app-2:8080/"

@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://mariadb:3306/counter
+    username: counteruser
+    password: secret
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: never
+    properties:
+      org.quartz.jobStore.isClustered: true
+      org.quartz.jobStore.clusterCheckinInterval: 1000
+      org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+      org.quartz.jobStore.acquireTriggersWithinLock: true
+      org.quartz.scheduler.batchTriggerAcquisitionMaxCount: 5
+      org.quartz.scheduler.instanceId: AUTO
