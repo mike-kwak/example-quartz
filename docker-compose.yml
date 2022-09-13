@@ -14,7 +14,7 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
     volumes:
-      #- ./local-dev/.volumes/db:/var/lib/mysql
+      #- ./local-dev/.volumes/db:/var/lib/mysql  # 폴더에 volume 연동으로 db 내용 저장
       - ./local-dev/config/db/:/docker-entrypoint-initdb.d/
     ports:
       - "3306:3306"
