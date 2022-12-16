@@ -1,4 +1,4 @@
-FROM gradle:7.5-jdk17 AS build
+FROM docker.io/library/gradle:7.5-jdk17 AS build
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ RUN gradle --no-daemon clean bootJar
 
 ###
 
-FROM eclipse-temurin:17-jdk AS app
+FROM docker.io/library/eclipse-temurin:17-jdk AS app
 
 WORKDIR /opt/server
 COPY --from=build /app/build/libs/example-quartz-0.0.1-SNAPSHOT.jar /opt/server
